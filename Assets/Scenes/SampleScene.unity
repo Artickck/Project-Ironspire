@@ -1588,13 +1588,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267850613f21ccf4b95614fb0b2477d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterMovement
-  playerCamera: {fileID: 811106596}
+  playerCamera: {fileID: 811106599}
   m_Movement: {fileID: 1787288637}
   speed: 4
   jumpforce: 10
   sensitivity: 4
-  gravity: 9.73
-  goblinLeap: {fileID: 0}
+  gravity: -9.73
+  goblinLeap: {fileID: 1787288635}
 --- !u!143 &1787288637
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1619,7 +1619,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Center: {x: 0, y: 0.49, z: 0}
 --- !u!4 &1787288639 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7e70fedf545752e4888db8ae6626a77f, type: 3}
