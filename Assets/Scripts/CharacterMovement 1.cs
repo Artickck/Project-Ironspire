@@ -9,8 +9,6 @@ public class CharacterMovement : MonoBehaviour
     private Vector2 lookInput;
     private bool isGrounded;
     private Vector3 velocity;
-    private float xRot;
-    private float cameraYaw;
 
 
     private Animator mAnimator;
@@ -21,7 +19,11 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpforce;
     [SerializeField] private float sensitivity;
-    [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 1.5f, -4f);
+
+    private Vector2 _cameraRotation = Vector2.zero;
+    private Vector2 playerRotation = Vector2.zero;
+    private float lookLimitV = 89f;
+
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDist;
@@ -103,24 +105,14 @@ public class CharacterMovement : MonoBehaviour
     //Orbit Camera
     private void movePlayerCamera()
     {
-        xRot -= lookInput.y * sensitivity;
-        xRot = Mathf.Clamp(xRot, 0f, 80f);
-        cameraYaw += lookInput.x * sensitivity;
+        _cameraRotation.x += sensitivity * lookInput.x;
+        _cameraRotation.y = Mathf.Clamp(_cameraRotation.y - sensitivity * lookInput.y, -lookLimitV, lookLimitV);
 
-        float radius = cameraOffset.magnitude;
-        float pitchRad = Mathf.Deg2Rad * xRot;
-        float yawRad = Mathf.Deg2Rad * cameraYaw;
+        playerRotation.x += transform.eulerAngles.x + sensitivity * lookInput.x;
 
-        Vector3 offset = new Vector3(
-            radius * Mathf.Cos(pitchRad) * Mathf.Sin(yawRad),
-            radius * Mathf.Sin(pitchRad),
-            radius * Mathf.Cos(pitchRad) * Mathf.Cos(yawRad)
-        );
+        transform.rotation = Quaternion.Euler(0f, playerRotation.x, 0f);
 
-        Vector3 targetPosition = transform.position + offset;
-
-        playerCamera.transform.position = Vector3.Lerp(playerCamera.transform.position, targetPosition, Time.deltaTime * 10f);
-        playerCamera.transform.LookAt(transform.position + Vector3.up * 1.5f);
+        playerCamera.transform.rotation = Quaternion.Euler(_cameraRotation.y, _cameraRotation.x, 0f);
     }
     
     private void updateAnimator()
